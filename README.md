@@ -1,8 +1,20 @@
-# Klubcamp bootstrap
+# Klubcamp
+
+Klubcamp is a responsive web application for organizing events at our field hockey club, primarily week-long training camps for young players.
+
+It replaces fragmented announcements and paper/PDF or Google Forms registrations followed by manual Excel entry with a shared event and registration process.
+
+At the same time, it is a project showing spec-driven development. See the `specs` directory for details.
+
+## Current status
 
 Minimal connectivity page and JSON API only; no product features or staff access protection.
 
 The [local application bootstrap (001)](specs/changes/001-application-bootstrap/validation.md) is complete. Hosted deployment and external-service verification are tracked separately in [002 — Production Setup](specs/changes/002-production-setup/requirements.md); [003 — Event Publishing](specs/changes/003-event-publishing/requirements.md) has not started. Local completion does not establish production readiness.
+
+Also see the [system architecture diagram](specs/diagrams/architecture.drawio.svg) for details.
+
+
 
 ## Local prerequisites
 
