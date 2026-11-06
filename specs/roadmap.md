@@ -6,6 +6,14 @@ Deliver a complete, usable v1.0 without a fixed deadline. Internal v0.x versions
 
 Each milestone requires an approved specification and validation criteria before implementation.
 
+## Current changes
+
+1. [001 — Application Bootstrap](changes/001-application-bootstrap/requirements.md): complete local development foundation.
+2. [002 — Production Setup](changes/002-production-setup/requirements.md): production feasibility, deployment, and external-service verification pending; remote operations require separate approval.
+3. [003 — Event Publishing](changes/003-event-publishing/requirements.md): approved product scope; implementation not started, dependent on the bootstrap and verified production setup.
+
+Change numbers identify specifications; the broader milestones below span multiple changes. Completing the local bootstrap does not complete deployment feasibility or staff access protection.
+
 ## 1. Verify deployment feasibility
 
 - Confirm how a persistent Node.js application can run alongside the existing WordPress website on Hetzner.
@@ -35,7 +43,7 @@ Each milestone requires an approved specification and validation criteria before
 
 ## 4. Build the event workflow
 
-- Allow authorized staff to create, edit, and publish events.
+- Allow authorized staff to create, review, publish, and cancel events; published events cannot be edited or deleted.
 - Allow parents to browse published events and view their details.
 - Provide responsive layouts and basic validation.
 

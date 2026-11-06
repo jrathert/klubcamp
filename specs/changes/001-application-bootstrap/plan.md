@@ -1,54 +1,32 @@
 # 001 — Application Bootstrap: Implementation Plan
 
-**Status:** Approved baseline; implementation not started.
+**Status:** Complete — local scope implemented and validated.
 
-Implement only the scope in [requirements.md](requirements.md). Record evidence against [validation.md](validation.md).
+Scope: [requirements.md](requirements.md). Results: [validation.md](validation.md). Production work is specified in [002 — Production Setup](../002-production-setup/plan.md).
 
-## 1. Resolve the hosting approach first
+## 1. Minimal application
 
-- Establish supported runtime versions, routing, and process supervision for manually managed Node.js.
-- Confirm the approach preserves WordPress.
-- If unsupported, present alternatives for approval before introducing new infrastructure or changing domain configuration.
+- Use Node.js 24.22.2, TypeScript, React/Vite, and Express.
+- Provide a health endpoint and frontend connectivity page with loading, success, and failure states.
+- Proxy API requests in development; serve the built frontend and API from Express for local preview.
+- Document API boundaries and npm commands.
 
-Reference: [Hetzner Node.js configuration](https://docs.hetzner.com/managed/administration-on-konsoleh/nodejs/). The manual runtime section does not by itself establish public routing or process supervision.
+## 2. Local infrastructure and configuration
 
-## 2. Create the minimal application structure
+- Pin MariaDB 10.11.19 with localhost binding and a version-specific persistent volume; preserve older volumes.
+- Pin Mailpit with localhost-only SMTP/browser ports and dedicated persistent storage.
+- Provide example settings, secret-file exclusions, and safe start/stop/reset instructions in the [README](../../../README.md).
 
-- Set up npm scripts, TypeScript, React/Vite, and Express.
-- Select a supported Node.js LTS version compatible with hosting and record it.
-- Implement the health endpoint and frontend connectivity page.
-- Configure the development API proxy and production serving of the built frontend.
-- Document the health response and unknown API route behavior.
+## 3. Explicit connectivity checks
 
-## 3. Establish local configuration and database
+- Use the MariaDB driver for a non-mutating database check and Nodemailer for one explicitly requested SMTP test message.
+- Bound connection and total execution time; sanitize failures and return meaningful exit codes.
+- Permit plaintext unauthenticated SMTP only in explicitly selected local Mailpit mode; preserve authenticated TLS defaults.
+- Keep checks separate from HTTP, startup, builds, and ordinary tests.
 
-- Add Docker Compose for MariaDB with a pinned supported version, preferably matching production's major version.
-- Bind the database port to localhost and persist data in a volume.
-- Document start, stop, and explicitly destructive reset procedures.
-- Add configuration examples and secret-file exclusions.
-- Add the database verification command using a MariaDB-compatible driver.
+## 4. Validation
 
-## 4. Add email verification
-
-- Use a small SMTP library to send an explicitly requested test message.
-- Document required SMTP settings and safe credential handling.
-- Give database and SMTP checks bounded timeouts, clear exit codes, and sanitized diagnostics.
-
-## 5. Add automated checks
-
-- Configure Vitest and minimal test helpers.
-- Test API behavior and frontend loading, success, and failure states.
-- Keep normal tests independent of live database, SMTP, and hosting services.
-- Verify type checking and production builds.
-
-## 6. Deploy and record evidence
-
-- Document installation, development, build, start, deployment, and safe deployment-removal procedures.
-- Deploy the bootstrap using the verified hosting approach.
-- Run database and email checks in the hosting environment.
-- Verify HTTPS, logs, restart behavior, and continued WordPress operation.
-- Record results and remaining blockers in the validation document. External checks not performed remain pending.
-
-## Deferred choices
-
-Select the exact MariaDB driver, SMTP library, and minimal test helpers during implementation within the approved scope. Do not introduce an ORM, migration tooling, or additional infrastructure in this change.
+- Test API behavior, frontend states, and SMTP configuration guards without live services.
+- Verify type checking, tests, build, local development, and built application serving.
+- Verify local database connectivity/persistence and Mailpit capture/persistence.
+- Retain concise evidence and links to operational instructions; production checks belong to change 002.

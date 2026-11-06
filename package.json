@@ -1,0 +1,45 @@
+{
+  "name": "klubcamp",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev:backend": "node --env-file-if-exists=.env --import tsx --watch backend/src/server.ts",
+    "dev:frontend": "vite",
+    "typecheck": "tsc --noEmit -p backend/tsconfig.json && tsc --noEmit -p frontend/tsconfig.json && tsc --noEmit -p tsconfig.tools.json",
+    "test": "vitest run",
+    "build": "tsc -p backend/tsconfig.json && vite build",
+    "start": "node --env-file-if-exists=.env backend/dist/server.js",
+    "check:db": "node --env-file-if-exists=.env --import tsx backend/src/check-db.ts",
+    "check:smtp": "node --env-file-if-exists=.env --import tsx backend/src/check-smtp.ts"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "mariadb": "^3.5.5",
+    "nodemailer": "^10.3.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.3",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.19.2",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/supertest": "^7.2.1",
+    "@vitejs/plugin-react": "^6.2.1",
+    "jsdom": "^31.0.0",
+    "supertest": "^7.3.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  }
+}

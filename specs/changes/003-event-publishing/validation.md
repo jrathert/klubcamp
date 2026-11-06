@@ -1,4 +1,4 @@
-# 002 — Event Publishing: Validation
+# 003 — Event Publishing: Validation
 
 **Status:** Approved criteria; all checks not run.
 

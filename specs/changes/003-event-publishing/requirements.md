@@ -1,4 +1,4 @@
-# 002 — Event Publishing: Requirements
+# 003 — Event Publishing: Requirements
 
 **Status:** Approved baseline; implementation not started.
 
@@ -6,7 +6,7 @@
 
 Deliver the first product vertical slice: authorized staff create, review, and publish an event, parents view it, and staff may subsequently cancel it. Published events cannot be edited or deleted.
 
-See [mission](../../mission.md), [technology stack](../../tech-stack.md), and [roadmap](../../roadmap.md). Implementation depends on the verified [application bootstrap](../001-application-bootstrap/requirements.md).
+See [mission](../../mission.md), [technology stack](../../tech-stack.md), and [roadmap](../../roadmap.md). Implementation depends on the completed [application bootstrap](../001-application-bootstrap/requirements.md) and verified [production setup](../002-production-setup/requirements.md).
 
 ## Confirmed decisions
 
@@ -35,7 +35,7 @@ Unpublished form content must not be publicly accessible.
 
 ## Boundaries and dependencies
 
-- Implementation depends on the verified application bootstrap.
+- Implementation depends on the completed application bootstrap and verified production setup.
 - Entra configuration and an allowlist must be available before staff-access validation can pass.
 - No registrations, cancellation emails, payments, deadline changes, granular permissions, or i18n framework.
 - Capacity is recorded and displayed here; seat allocation follows with registration.
