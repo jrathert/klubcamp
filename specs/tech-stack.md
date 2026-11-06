@@ -4,10 +4,12 @@
 
 - **Language:** TypeScript for frontend and backend.
 - **Frontend:** React SPA built with Vite. Server-side rendering, SEO, and rich event-sharing previews are not first-release requirements.
-- **Backend:** Node.js with Express, exposing a JSON HTTP API.
-- **Database:** MariaDB.
-- **Email:** Existing mail service; SMTP configuration remains to be verified.
+- **Backend:** Node.js 24 with Express, exposing a JSON HTTP API.
+- **Database:** MariaDB 10.11.19, matching the provider's reported production version; local Docker Compose uses the same version.
+- **Email:** Mailpit (Docker) captures local development email without TLS/authentication or external delivery. Production uses the existing mail service with authenticated TLS; production SMTP configuration remains to be verified.
 - **Hosting:** Existing Hetzner Webhosting L package. Preserve the club's WordPress website.
+
+See [Production Environment](production-environment.md) for the current provider baseline and verification boundaries. Local Node.js is pinned to 24.22.2; the provider's exact Node 24 patch version is not yet recorded.
 
 ## Approved architecture
 

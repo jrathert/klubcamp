@@ -1,8 +1,8 @@
-# 002 — Event Publishing: Implementation Plan
+# 003 — Event Publishing: Implementation Plan
 
 **Status:** Approved baseline; implementation not started.
 
-Implement only the scope in [requirements.md](requirements.md). Record evidence against [validation.md](validation.md). Verify the application-bootstrap dependency before implementation.
+Implement only the scope in [requirements.md](requirements.md). Record evidence against [validation.md](validation.md). Verify the application-bootstrap and production-setup dependencies before implementation.
 
 ## 1. Configure staff access
 
@@ -36,7 +36,7 @@ Implement only the scope in [requirements.md](requirements.md). Record evidence 
 ## 5. Validate and synchronize specifications
 
 - Run automated tests and manual usability/security checks.
-- Update the roadmap from “create, edit, publish” to “create, publish, cancel”.
+- Keep the roadmap aligned with the approved create/review/publish/cancel workflow; published events cannot be edited or deleted.
 - Record selected access, session, and migration tooling in the relevant specifications.
 - Record validation results and any blockers; unperformed external checks remain pending.
 
