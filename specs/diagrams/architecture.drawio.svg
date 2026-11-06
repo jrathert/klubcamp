@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1050" viewBox="0 0 1200 1050" role="img" aria-labelledby="title description" content="&lt;mxfile host=&quot;app.diagrams.net&quot; type=&quot;device&quot;&gt;&lt;diagram id=&quot;architecture&quot; name=&quot;Klubcamp architecture&quot;&gt;&lt;mxGraphModel dx=&quot;1200&quot; dy=&quot;1050&quot; grid=&quot;1&quot; gridSize=&quot;10&quot; page=&quot;1&quot; pageScale=&quot;1&quot; pageWidth=&quot;1200&quot; pageHeight=&quot;1050&quot;&gt;&lt;root&gt;&lt;mxCell id=&quot;0&quot;/&gt;&lt;mxCell id=&quot;1&quot; parent=&quot;0&quot;/&gt;
+&lt;mxCell id=&quot;heading&quot; value=&quot;KLUBCAMP | Solution architecture&amp;#xa;Current bootstrap + approved direction | 6 November 2026&quot; style=&quot;text;html=0;align=left;fontSize=24;fontStyle=1;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;40&quot; y=&quot;25&quot; width=&quot;1120&quot; height=&quot;65&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;legend&quot; value=&quot;Solid blue: implemented locally | Dashed amber: planned or not verified in production&quot; style=&quot;text;align=left;fontSize=14;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;40&quot; y=&quot;95&quot; width=&quot;1120&quot; height=&quot;30&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;hosting&quot; value=&quot;Preferred production topology: Hetzner Webhosting L (NOT YET VERIFIED)&quot; style=&quot;rounded=1;verticalAlign=top;spacingTop=15;align=left;spacingLeft=20;fillColor=#fffbeb;strokeColor=#b7791f;dashed=1;fontSize=17;fontStyle=1;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;360&quot; y=&quot;150&quot; width=&quot;800&quot; height=&quot;490&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;browser&quot; value=&quot;Browser / React SPA&amp;#xa;TypeScript + Vite build&amp;#xa;Current: connectivity page&amp;#xa;Future: parents, trainers, office&quot; style=&quot;rounded=1;whiteSpace=wrap;fillColor=#eaf3ff;strokeColor=#3973ac;fontSize=16;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;40&quot; y=&quot;235&quot; width=&quot;260&quot; height=&quot;145&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;server&quot; value=&quot;Node.js 24 / Express&amp;#xa;One app serves frontend/dist + JSON API&amp;#xa;GET /api/health (application only)&amp;#xa;Unknown /api routes: JSON 404&quot; style=&quot;rounded=1;fillColor=#eaf3ff;strokeColor=#3973ac;fontSize=16;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;400&quot; y=&quot;215&quot; width=&quot;390&quot; height=&quot;125&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;future&quot; value=&quot;Planned application layers&amp;#xa;HTTP handlers → business logic → data access&amp;#xa;Events / registrations / participant export&amp;#xa;Staff access protection + email confirmations&amp;#xa;Not implemented; DB tooling undecided&quot; style=&quot;rounded=1;fillColor=#fff3d6;strokeColor=#b7791f;dashed=1;fontSize=15;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;400&quot; y=&quot;385&quot; width=&quot;390&quot; height=&quot;145&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;db&quot; value=&quot;Provider MariaDB 10.11.19&amp;#xa;Hosted connectivity unverified&amp;#xa;No application schema yet&quot; style=&quot;rounded=1;fillColor=#fff3d6;strokeColor=#b7791f;dashed=1;fontSize=15;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;860&quot; y=&quot;215&quot; width=&quot;270&quot; height=&quot;110&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;smtp&quot; value=&quot;Existing production mail service&amp;#xa;Authenticated SMTP + TLS&amp;#xa;Settings / delivery unverified&quot; style=&quot;rounded=1;fillColor=#fff3d6;strokeColor=#b7791f;dashed=1;fontSize=15;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;860&quot; y=&quot;410&quot; width=&quot;270&quot; height=&quot;110&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;guardrail&quot; value=&quot;Preserve existing WordPress: do not activate Node.js on its domain.&amp;#xa;HTTPS, routing, process supervision and deployment require verification / approval.&quot; style=&quot;text;align=left;fontSize=14;fontColor=#854d0e;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;390&quot; y=&quot;560&quot; width=&quot;740&quot; height=&quot;55&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;web&quot; value=&quot;Same-origin&amp;#xa;assets + /api&quot; style=&quot;edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#3973ac;fontSize=13;&quot; edge=&quot;1&quot; parent=&quot;1&quot; source=&quot;browser&quot; target=&quot;server&quot;&gt;&lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;layers&quot; style=&quot;edgeStyle=orthogonalEdgeStyle;endArrow=classic;dashed=1;strokeColor=#b7791f;&quot; edge=&quot;1&quot; parent=&quot;1&quot; source=&quot;server&quot; target=&quot;future&quot;&gt;&lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;sql&quot; value=&quot;SQL&quot; style=&quot;edgeStyle=orthogonalEdgeStyle;endArrow=classic;dashed=1;strokeColor=#b7791f;exitX=1;exitY=0.2;entryX=0;entryY=0.5;&quot; edge=&quot;1&quot; parent=&quot;1&quot; source=&quot;future&quot; target=&quot;db&quot;&gt;&lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;mail&quot; value=&quot;SMTP&quot; style=&quot;edgeStyle=orthogonalEdgeStyle;endArrow=classic;dashed=1;strokeColor=#b7791f;&quot; edge=&quot;1&quot; parent=&quot;1&quot; source=&quot;future&quot; target=&quot;smtp&quot;&gt;&lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;local&quot; value=&quot;LOCAL DEVELOPMENT | Host-run Node.js + Docker Compose services (loopback only)&quot; style=&quot;rounded=1;verticalAlign=top;spacingTop=15;align=left;spacingLeft=20;fillColor=#f5f8fc;strokeColor=#94a3b8;fontSize=17;fontStyle=1;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;40&quot; y=&quot;680&quot; width=&quot;1120&quot; height=&quot;275&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;vite&quot; value=&quot;Vite dev server :5173&amp;#xa;React + hot reload&quot; style=&quot;rounded=1;fillColor=#eaf3ff;strokeColor=#3973ac;fontSize=15;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;70&quot; y=&quot;750&quot; width=&quot;210&quot; height=&quot;80&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;devnode&quot; value=&quot;Express :3000&amp;#xa;No DB / SMTP on startup&quot; style=&quot;rounded=1;fillColor=#eaf3ff;strokeColor=#3973ac;fontSize=15;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;380&quot; y=&quot;750&quot; width=&quot;230&quot; height=&quot;80&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;checks&quot; value=&quot;Explicit CLI checks (not HTTP)&amp;#xa;check:db → SELECT 1 only&amp;#xa;check:smtp → one test email&quot; style=&quot;rounded=1;fillColor=#eaf3ff;strokeColor=#3973ac;fontSize=14;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;380&quot; y=&quot;855&quot; width=&quot;300&quot; height=&quot;80&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;localdb&quot; value=&quot;MariaDB 10.11.19 :3306&amp;#xa;Volume: mariadb-10-11-data&quot; style=&quot;rounded=1;fillColor=#eaf3ff;strokeColor=#3973ac;fontSize=14;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;810&quot; y=&quot;745&quot; width=&quot;320&quot; height=&quot;80&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;mailpit&quot; value=&quot;Mailpit :1025 | inbox UI :8025&amp;#xa;No TLS / auth / external delivery&amp;#xa;Volume: mailpit-data&quot; style=&quot;rounded=1;fillColor=#eaf3ff;strokeColor=#3973ac;fontSize=14;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;810&quot; y=&quot;855&quot; width=&quot;320&quot; height=&quot;80&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;proxy&quot; value=&quot;/api proxy&quot; style=&quot;endArrow=classic;strokeColor=#3973ac;fontSize=13;&quot; edge=&quot;1&quot; parent=&quot;1&quot; source=&quot;vite&quot; target=&quot;devnode&quot;&gt;&lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;dbcheck&quot; value=&quot;SQL&quot; style=&quot;edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#3973ac;exitX=1;exitY=0.25;entryX=0;entryY=0.5;&quot; edge=&quot;1&quot; parent=&quot;1&quot; source=&quot;checks&quot; target=&quot;localdb&quot;&gt;&lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;mailcheck&quot; value=&quot;SMTP&quot; style=&quot;endArrow=classic;strokeColor=#3973ac;&quot; edge=&quot;1&quot; parent=&quot;1&quot; source=&quot;checks&quot; target=&quot;mailpit&quot;&gt;&lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;mxCell id=&quot;footer&quot; value=&quot;Secrets: server environment / ignored .env only; never frontend bundles. Ports shown are local defaults.&amp;#xa;Sources: specs/tech-stack.md, specs/production-environment.md, specs/roadmap.md, README.md and current source.&quot; style=&quot;text;align=left;fontSize=13;fontColor=#475569;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;40&quot; y=&quot;975&quot; width=&quot;1120&quot; height=&quot;50&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;
+&lt;/root&gt;&lt;/mxGraphModel&gt;&lt;/diagram&gt;&lt;/mxfile&gt;">
+  <title id="title">Klubcamp solution architecture</title>
+  <desc id="description">Editable diagrams.net architecture. Solid blue denotes the implemented local bootstrap; dashed amber denotes planned application layers and unverified production infrastructure. Express serves a React SPA and JSON API. Future business logic uses MariaDB and SMTP. Local development uses Vite, explicit connectivity checks, MariaDB and Mailpit.</desc>
+  <defs>
+    <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#3973ac"/></marker>
+    <marker id="amber-arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#b7791f"/></marker>
+    <style>
+      text { font-family: Arial, Helvetica, sans-serif; fill: #172b4d; }
+      .box { fill: #eaf3ff; stroke: #3973ac; stroke-width: 1.5; }
+      .future { fill: #fff3d6; stroke: #b7791f; stroke-width: 1.5; stroke-dasharray: 7 5; }
+      .label { font-size: 15px; text-anchor: middle; }
+      .small { font-size: 13px; }
+      .edge { fill: none; stroke: #3973ac; stroke-width: 1.5; marker-end: url(#blue-arrow); }
+      .planned-edge { fill: none; stroke: #b7791f; stroke-width: 1.5; stroke-dasharray: 6 4; marker-end: url(#amber-arrow); }
+    </style>
+  </defs>
+  <rect width="1200" height="1050" fill="white"/>
+  <text x="40" y="54" font-size="28" font-weight="bold">KLUBCAMP | Solution architecture</text>
+  <text x="40" y="82" font-size="16">Current bootstrap + approved direction | 6 November 2026</text>
+  <text x="40" y="115" font-size="14">Solid blue: implemented locally | Dashed amber: planned or not verified in production</text>
+  <rect x="360" y="150" width="800" height="490" rx="12" fill="#fffbeb" stroke="#b7791f" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="380" y="182" font-size="17" font-weight="bold">Preferred production topology: Hetzner Webhosting L (NOT YET VERIFIED)</text>
+  <rect class="box" x="40" y="235" width="260" height="145" rx="10"/>
+  <text class="label" x="170" y="269"><tspan font-weight="bold">Browser / React SPA</tspan><tspan x="170" dy="25">TypeScript + Vite build</tspan><tspan x="170" dy="25">Current: connectivity page</tspan><tspan x="170" dy="25">Future: parents, trainers, office</tspan></text>
+  <rect class="box" x="400" y="215" width="390" height="125" rx="10"/>
+  <text class="label" x="595" y="244"><tspan font-weight="bold">Node.js 24 / Express</tspan><tspan x="595" dy="24">One app serves frontend/dist + JSON API</tspan><tspan x="595" dy="24">GET /api/health (application only)</tspan><tspan x="595" dy="24">Unknown /api routes: JSON 404</tspan></text>
+  <path class="edge" d="M300 295 H350 V278 H400"/>
+  <text class="small" x="348" y="247" text-anchor="middle"><tspan>Same-origin</tspan><tspan x="348" dy="16">assets + /api</tspan></text>
+  <rect class="future" x="400" y="385" width="390" height="145" rx="10"/>
+  <text class="label" x="595" y="413"><tspan font-weight="bold">Planned application layers</tspan><tspan x="595" dy="24">HTTP handlers → business logic → data access</tspan><tspan x="595" dy="24">Events / registrations / participant export</tspan><tspan x="595" dy="24">Staff access protection + email confirmations</tspan><tspan x="595" dy="24">Not implemented; DB tooling undecided</tspan></text>
+  <path class="planned-edge" d="M595 340 V385"/>
+  <rect class="future" x="860" y="215" width="270" height="110" rx="10"/>
+  <text class="label" x="995" y="249"><tspan font-weight="bold">Provider MariaDB 10.11.19</tspan><tspan x="995" dy="25">Hosted connectivity unverified</tspan><tspan x="995" dy="25">No application schema yet</tspan></text>
+  <rect class="future" x="860" y="410" width="270" height="110" rx="10"/>
+  <text class="label" x="995" y="444"><tspan font-weight="bold">Existing production mail service</tspan><tspan x="995" dy="25">Authenticated SMTP + TLS</tspan><tspan x="995" dy="25">Settings / delivery unverified</tspan></text>
+  <path class="planned-edge" d="M790 414 H825 V270 H860"/>
+  <text class="small" x="835" y="348">SQL</text>
+  <path class="planned-edge" d="M790 465 H860"/>
+  <text class="small" x="825" y="453" text-anchor="middle">SMTP</text>
+  <text x="390" y="581" font-size="14" style="fill:#854d0e"><tspan font-weight="bold">Preserve existing WordPress: do not activate Node.js on its domain.</tspan><tspan x="390" dy="23">HTTPS, routing, process supervision and deployment require verification / approval.</tspan></text>
+  <rect x="40" y="680" width="1120" height="275" rx="12" fill="#f5f8fc" stroke="#94a3b8"/>
+  <text x="60" y="712" font-size="17" font-weight="bold">LOCAL DEVELOPMENT | Host-run Node.js + Docker Compose services (loopback only)</text>
+  <rect class="box" x="70" y="750" width="210" height="80" rx="10"/>
+  <text class="label" x="175" y="783"><tspan font-weight="bold">Vite dev server :5173</tspan><tspan x="175" dy="24">React + hot reload</tspan></text>
+  <rect class="box" x="380" y="750" width="230" height="80" rx="10"/>
+  <text class="label" x="495" y="783"><tspan font-weight="bold">Express :3000</tspan><tspan x="495" dy="24">No DB / SMTP on startup</tspan></text>
+  <path class="edge" d="M280 790 H380"/>
+  <text class="small" x="330" y="778" text-anchor="middle">/api proxy</text>
+  <rect class="box" x="380" y="855" width="300" height="80" rx="10"/>
+  <text x="530" y="879" font-size="14" text-anchor="middle"><tspan font-weight="bold">Explicit CLI checks (not HTTP)</tspan><tspan x="530" dy="21">check:db → SELECT 1 only</tspan><tspan x="530" dy="21">check:smtp → one test email</tspan></text>
+  <rect class="box" x="810" y="745" width="320" height="80" rx="10"/>
+  <text x="970" y="778" font-size="14" text-anchor="middle"><tspan font-weight="bold">MariaDB 10.11.19 :3306</tspan><tspan x="970" dy="24">Volume: mariadb-10-11-data</tspan></text>
+  <rect class="box" x="810" y="855" width="320" height="80" rx="10"/>
+  <text x="970" y="879" font-size="14" text-anchor="middle"><tspan font-weight="bold">Mailpit :1025 | inbox UI :8025</tspan><tspan x="970" dy="21">No TLS / auth / external delivery</tspan><tspan x="970" dy="21">Volume: mailpit-data</tspan></text>
+  <path class="edge" d="M680 875 H740 V785 H810"/>
+  <text class="small" x="750" y="831">SQL</text>
+  <path class="edge" d="M680 895 H810"/>
+  <text class="small" x="745" y="919" text-anchor="middle">SMTP</text>
+  <text x="40" y="994" font-size="13" style="fill:#475569"><tspan>Secrets: server environment / ignored .env only; never frontend bundles. Ports shown are local defaults.</tspan><tspan x="40" dy="22">Sources: specs/tech-stack.md, specs/production-environment.md, specs/roadmap.md, README.md and current source.</tspan></text>
+</svg>
