@@ -12,7 +12,7 @@ See [mission](../../mission.md), [technology stack](../../tech-stack.md), and [r
 
 - TypeScript, React/Vite, Express, and npm; separate frontend/backend directories.
 - Node.js 24, locally pinned to 24.22.2.
-- Local Docker MariaDB 10.11.19, aligned with the provider's reported version.
+- Original local bootstrap used MariaDB 10.11.19 based on the then-reported provider version. Change 002 corrects the actual production baseline and current Compose pin to 11.8.6; see [production environment](../../production-environment.md).
 - Local Docker Mailpit captures development email without external delivery.
 - Vitest; normal tests and startup do not depend on live infrastructure.
 

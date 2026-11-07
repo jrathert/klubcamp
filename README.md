@@ -10,7 +10,7 @@ At the same time, it is a project showing spec-driven development. See the `spec
 
 Minimal connectivity page and JSON API only; no product features or staff access protection.
 
-The [local application bootstrap (001)](specs/changes/001-application-bootstrap/validation.md) is complete. Hosted deployment and external-service verification are tracked separately in [002 — Production Setup](specs/changes/002-production-setup/requirements.md); [003 — Event Publishing](specs/changes/003-event-publishing/requirements.md) has not started. Local completion does not establish production readiness.
+The [local application bootstrap (001)](specs/changes/001-application-bootstrap/validation.md) and [bootstrap deployment (002)](specs/changes/002-production-setup/validation.md) are complete. [003 — Event Publishing](specs/changes/003-event-publishing/requirements.md) has not started; its bootstrap/deployment prerequisites are satisfied. Development with synthetic data may proceed, but real product use remains gated by [pre-release readiness](specs/release-readiness.md) and applicable feature/security acceptance criteria.
 
 Also see the [system architecture diagram](specs/diagrams/architecture.drawio.svg) for details.
 
@@ -62,9 +62,11 @@ Open `http://127.0.0.1:3000`. Express serves `frontend/dist` and the API without
 
 ## Local MariaDB
 
-Compose pins MariaDB **10.11.19**, matching the provider's reported production version. No ORM, migrations, or application schema are introduced. Settings come from `.env`; `DB_HOST` should remain `127.0.0.1` locally. The container's port is bound **only to 127.0.0.1**, and data persists in the named volume `mariadb-10-11-data`. If 3306 is occupied, change `DB_PORT` in `.env`.
+Compose pins MariaDB **11.8.6**, matching the verified production server version. No ORM, migrations, or application schema are introduced. Settings come from `.env`; `DB_HOST` should remain `127.0.0.1` locally. The container's port is bound **only to 127.0.0.1**, and data persists in the fresh named volume `mariadb-11-8-6-data`. If 3306 is occupied, change `DB_PORT` in `.env`.
 
-**Existing 11.8 data:** the version-specific volume deliberately leaves any previous `mariadb-data` volume untouched. Do not reuse an 11.8 data directory with MariaDB 10.11. If you have valuable old data, preserve it and plan a compatible logical export/import separately; this setup performs no automatic migration or deletion. `docker compose down --volumes` now removes only volumes declared by the current Compose configuration, not the old 11.8 volume.
+**Existing data:** the new volume leaves both previous `mariadb-10-11-data` and older `mariadb-data` volumes untouched. The next `docker compose up -d db` will recreate the DB container with an initially empty database on the new volume; it does not migrate existing records. Preserve valuable data and plan a separate logical export/import before switching. Never attach an older volume to the new image casually, or downgrade an 11.8 data directory to 10.11. `docker compose down --volumes` deletes the currently declared database and Mailpit volumes, not the legacy database volumes. Do not use `--remove-orphans` or delete legacy volumes just to silence Compose warnings.
+
+Version alignment does not imply identical settings: the isolated local image reported connection collation `utf8mb4_uca1400_ai_ci`, while the production administration session reported `utf8mb4_unicode_ci`. No application schema exists yet; choose and verify schema/connection settings before introducing one. See [production baseline](specs/production-environment.md) for the full metadata and evidence boundaries.
 
 Start, then explicitly verify once initialization finishes:
 
@@ -142,6 +144,8 @@ Node loads the optional root `.env`; existing environment variables take precede
 
 ## Production environment
 
-The provider offers **Node.js 24** and **MariaDB 10.11.19** on the existing Hetzner Webhosting L package. The current baseline, configuration boundaries, and WordPress safeguards are documented in [Production Environment](specs/production-environment.md). [002 — Production Setup](specs/changes/002-production-setup/requirements.md) owns the outstanding deployment and hosted database/SMTP checks; remote operations require explicit approval.
+The deployed environment uses **Node.js 24.22.2** and **MariaDB 11.8.6** on Hetzner Webhosting L. The application is live at `https://camps.schwarzweisskoeln.de`. HTTPS, frontend/assets/API, hosted database connectivity, SMTP delivery, and manual restart have been verified. See [Production Environment](specs/production-environment.md) for evidence boundaries, [provider-neutral packaging and startup](docs/deployment.md) for the artifact/runtime contract, and [Hetzner deployment and operation](docs/deployment-hetzner.md) for actual home-directory paths, panel settings, HTTPS, and the current Azure SMTP STARTTLS setup.
 
-Production deployment is not yet verified. Do **not** activate Node.js on the WordPress domain or treat local Compose/preview instructions as a production deployment procedure. There is no remote bootstrap deployment to remove. Locally, stop the servers with Ctrl+C; `docker compose down` preserves database data.
+Build an upload-ready package with `npm run build:production`; validate its production-only bootstrap with `npm run test:production`. Output is `release/klubcamp/app/`, without secrets or dependencies. On the server, install dependencies with `npm ci --omit=dev`; generated npm start/check commands explicitly load the sibling `production.env`. Existing development commands and configuration are unchanged.
+
+The owner accepted [002 — Production Setup](specs/changes/002-production-setup/validation.md) as complete for bootstrap deployment. Automatic recovery, safe update/removal, application DB TLS/access checks, and further operating details are explicitly deferred—not passed—and tracked in [pre-release readiness](specs/release-readiness.md), alongside backup/restore and email deliverability. Complete those gates before storing real personal data, enabling real registrations, or sending real confirmations. Remote changes still require approval. Local Compose/preview instructions are not a hosted procedure. Locally, stop the servers with Ctrl+C; `docker compose down` preserves database data.

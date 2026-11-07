@@ -13,7 +13,7 @@ Scope: [requirements.md](requirements.md). Results: [validation.md](validation.m
 
 ## 2. Local infrastructure and configuration
 
-- Pin MariaDB 10.11.19 with localhost binding and a version-specific persistent volume; preserve older volumes.
+- Original implementation pinned MariaDB 10.11.19 with localhost binding and a version-specific persistent volume. Change 002 subsequently corrects the current pin to 11.8.6 using a new volume; older volumes remain untouched.
 - Pin Mailpit with localhost-only SMTP/browser ports and dedicated persistent storage.
 - Provide example settings, secret-file exclusions, and safe start/stop/reset instructions in the [README](../../../README.md).
 
