@@ -9,18 +9,18 @@ Each milestone requires an approved specification and validation criteria before
 ## Current changes
 
 1. [001 — Application Bootstrap](changes/001-application-bootstrap/requirements.md): complete local development foundation.
-2. [002 — Production Setup](changes/002-production-setup/requirements.md): production feasibility, deployment, and external-service verification pending; remote operations require separate approval.
-3. [003 — Event Publishing](changes/003-event-publishing/requirements.md): approved product scope; implementation not started, dependent on the bootstrap and verified production setup.
+2. [002 — Production Setup](changes/002-production-setup/requirements.md): complete — bootstrap deployment verified. HTTPS frontend/API, database connectivity, SMTP delivery, and manual restart are accepted; remaining operational hardening is transferred to [pre-release readiness](release-readiness.md).
+3. [003 — Event Publishing](changes/003-event-publishing/requirements.md): approved product scope; implementation not started. Bootstrap and deployment prerequisites are satisfied; development may proceed under its approved specification using synthetic data.
 
-Change numbers identify specifications; the broader milestones below span multiple changes. Completing the local bootstrap does not complete deployment feasibility or staff access protection.
+Change numbers identify specifications; the broader milestones below span multiple changes. Changes 001/002 complete local bootstrap and deployment feasibility, not staff access protection or approval for real product use.
 
 ## 1. Verify deployment feasibility
 
-- Confirm how a persistent Node.js application can run alongside the existing WordPress website on Hetzner.
+- Confirm persistent konsoleH-managed Node.js operation for `camps.schwarzweisskoeln.de` on Hetzner.
 - Verify routing, HTTPS, environment configuration, logs, and process restart behavior.
 - Verify MariaDB and outbound email connectivity.
 
-**Complete when:** a minimal deployed application demonstrates the required connections without disrupting WordPress.
+**Complete:** 002 demonstrates a managed bootstrap over HTTPS, private configuration, DB/SMTP connectivity, logs, and manual restart. Full operational hardening is deferred to the release milestone, not claimed verified here.
 
 ## 2. Specify the first-release workflows
 
@@ -71,6 +71,7 @@ Change numbers identify specifications; the broader milestones below span multip
 - Test authorization, validation, failure handling, and personal-data safeguards.
 - Verify backup and restore procedures and production configuration.
 - Document essential operation and maintenance tasks.
+- Complete the [pre-release readiness checklist](release-readiness.md), including the explicit deferrals from 002. The public bootstrap is not permission to store real personal data or send real registration confirmations; those uses remain gated by the checklist and applicable feature/security acceptance criteria.
 
 **Complete when:** all first-release acceptance criteria pass. No separate pilot phase is required.
 

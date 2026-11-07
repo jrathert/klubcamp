@@ -1,46 +1,47 @@
 # Production Environment
 
-This document describes the current production baseline, not the sequence of local setup experiments. Version availability is reported by the project owner; a deployed Klubcamp application has not yet been verified on the provider.
+This document describes the deployed bootstrap baseline as verified on **7 November 2026**. Public HTTP(S) checks were performed by the agent; SSH, database, email delivery, and restart evidence was supplied by the owner. Change 002 is complete for bootstrap deployment; deferred operational/release checks are tracked separately below.
 
 ## Environment baseline
 
 | Component | Production | Local alignment |
 | --- | --- | --- |
 | Hosting | Existing Hetzner Webhosting L package | Local development only; no production containers |
-| Backend runtime | Node.js **24** available; exact provider patch version not recorded | Node.js **24.22.2**, selected via `.nvmrc` / `.node-version` |
-| Database | Provider-managed MariaDB **10.11.19** | Docker Compose image `mariadb:10.11.19` |
-| Email | Existing mail service; hosted settings and delivery unverified | Mailpit captures development mail; local delivery verified |
-| Existing website | Club WordPress website must remain operational | No domain or hosting configuration changes authorized |
+| Backend runtime | Node.js **24.22.2**, confirmed by hosted `node --version` | Node.js **24.22.2**, selected via `.nvmrc` / `.node-version` |
+| Database | MariaDB **11.8.6-MariaDB-0+deb13u1**, owner-confirmed on the application DB server; non-root account | Docker Compose image `mariadb:11.8.6`, fresh `mariadb-11-8-6-data` volume |
+| Email | Azure Communication Services, `smtp.azurecomm.net:587`, authenticated STARTTLS; delivery confirmed, marked as spam | Mailpit captures development mail; local delivery verified |
+| Application hostname | `camps.schwarzweisskoeln.de`, created by the owner | Other domains are outside deployment scope |
 
-The application uses React/Vite and Express with a JSON API. The preferred deployment is one Node.js application serving both the API and built frontend from one origin, subject to hosting verification. Local database containers do not define production infrastructure.
+One konsoleH-managed Express process serves the built React frontend and JSON API over `https://camps.schwarzweisskoeln.de`. HTTPS page/assets/API, IPv4/IPv6 access, HTTP-to-HTTPS redirection, and JSON API 404s are verified. Local database containers do not define production infrastructure. See [Hetzner deployment and operation](../docs/deployment-hetzner.md) for paths, panel settings, troubleshooting, and the current Azure SMTP setup; [the shared packaging/runtime contract](../docs/deployment.md) is provider-neutral.
 
 ## Configuration boundary
 
-- Keep credentials outside source control and frontend bundles. `.env.example` documents the application's settings without real credentials.
-- The backend listener uses `HOST` and `PORT`; the provider's required listener/routing configuration remains to be established.
-- Database connectivity uses `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD`. The hosted endpoint, access rules, TLS requirements, credentials, character set, collation, SQL mode, and time zone have not been verified. Local version parity alone does not establish configuration parity.
-- Production SMTP uses `SMTP_MODE=smtp`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`, and `SMTP_FROM`, with authentication and TLS required. Never use local Mailpit mode in production. Verify the existing service's settings and an authorized test recipient before sending a message.
+- Keep credentials outside source control and frontend bundles. Production launchers explicitly load `~/klubcamp/production.env` before backend/check imports; the file must be private (mode 600 or stricter) and contain `NODE_ENV=production`. Existing environment variables take precedence. Main settings live in this file, not the panel. `deployment/production.env.example` is a placeholder-only reference, not part of the artifact.
+- Working deployment uses `HOST=127.0.0.1` and `PORT=3000`; konsoleH activation makes the application available through public HTTP(S). The backend does not switch to port 80/443. Do not expose port 3000 or add a proxy/process manager. The exact provider routing implementation is not assumed.
+- Database connectivity uses `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD`. `check:db` succeeded against the actual server. Owner-supplied administration-session metadata: character set `utf8mb4`, collation `utf8mb4_unicode_ci`, SQL mode `STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`, session time zone `SYSTEM`. Administration TLS cipher: `TLS_AES_256_GCM_SHA384`. These session values do not prove application-session parity or application DB TLS. Application TLS requirements/access rules remain to be established; credentials/endpoints stay in the private file.
+- An isolated local 11.8.6 image test returned `11.8.6-MariaDB-ubu2404`, non-root connectivity, `utf8mb4`, matching SQL mode and `SYSTEM` time zone, but connection collation `utf8mb4_uca1400_ai_ci`. Production's Debian packaging and administration-session collation differ. Version alignment is not full configuration parity; schema/connection collation must be deliberately established before schema work rather than assumed from this check.
+- Production SMTP uses `SMTP_MODE=smtp`, `SMTP_HOST=smtp.azurecomm.net`, `SMTP_PORT=587`, and `SMTP_SECURE=false`, plus private `SMTP_USER`, `SMTP_PASSWORD`, and `SMTP_FROM`. Here `false` selects required STARTTLS, not plaintext: the application sets `requireTLS=true`. `true` selects immediate TLS, usually port 465, and failed against this Azure port-587 endpoint. `SMTP_FROM` is the authorized sender; the recipient is supplied to the explicit test command. Never use Mailpit mode in production. The authorized test was accepted and received, but marked as spam; address deliverability before product use.
 - `DB_ROOT_PASSWORD` is for local Compose initialization only; do not request or use a production root account.
 
-## Deployment verification still required
+## Verified operation and remaining checks
 
-Requirements, execution planning, and acceptance checks are tracked in [002 — Production Setup](changes/002-production-setup/requirements.md). The completed local bootstrap does not establish production readiness. Specification approval does not authorize remote operations.
+The completed bootstrap deployment and its evidence are recorded in [002 — Production Setup](changes/002-production-setup/validation.md). The owner explicitly accepted that scope while transferring further operational hardening to [pre-release readiness](release-readiness.md). Neither closure nor specification approval authorizes remote operations or real product use.
 
-No remote bootstrap deployment has been made or validated. Before deployment, establish and approve:
+The owner deployed under the **SSH account home directory**, not Apache's document root: `~/klubcamp/app`, private configuration `~/klubcamp/production.env`, and log `~/klubcamp/application.log`. Directory/file permissions `700`/`600` were verified. Logs show sanitized startup messages; manual restart after configuration edits works. Public probes of private-file URLs returned the SPA fallback, not file contents.
 
-1. A routing/domain arrangement that preserves WordPress, including HTTPS for the page and API.
-2. Persistent Node.js operation, the exact runtime patch version, listener configuration, and process supervision.
-3. Secure runtime configuration, log access, restart procedures, and safe stop/removal procedures.
-4. Hosted database connectivity using `npm run check:db` (non-mutating `SELECT 1`).
-5. Explicit SMTP acceptance and inbox delivery using `npm run check:smtp -- <authorized-recipient>`.
-6. Continued WordPress operation after deployment and restart.
+Deferred to pre-release readiness, not blockers to closing 002 and not verified results:
 
-**Do not activate Node.js on the WordPress domain.** [Hetzner's Node.js documentation](https://docs.hetzner.com/managed/administration-on-konsoleh/nodejs/) warns that activation disables PHP/HTML applications on the selected domain. Availability of a manually selected runtime does not prove public routing or supervision. A separate subdomain or other hosting arrangement requires approval rather than assumption.
+1. PR1: Automatic recovery, exact operating controls, startup-failure detection, selected memory limit, and relevant resource documentation.
+2. PR2: Safe hosted update/removal rehearsal preserving configuration, logs, database data, and shared services.
+3. PR3: Application DB TLS/access/session evidence. The administration-tool TLS result is not evidence for the Node driver connection.
+4. PR6: Additional hosted configuration/failure tests beyond the accepted local launcher tests.
 
-Backup/restore and production data-handling procedures must also be established before production use; they are not implemented by the bootstrap.
+Use the application's selected konsoleH target only; other domains and applications are outside scope. Change 002 is complete as **bootstrap deployment verified**, not full product-release readiness. Development can proceed using synthetic data.
+
+Backup/restore and personal-data procedures (PR4), sender deliverability (PR5), and all other checklist/feature-security gates must be satisfied before real product use; they are not implemented or certified by bootstrap closure.
 
 ## Local database safety
 
-Compose uses the version-specific named volume `mariadb-10-11-data` so MariaDB 10.11 cannot accidentally open the previous 11.8 volume. Any previous `mariadb-data` volume is left untouched. Never point MariaDB 10.11 at a data directory initialized by MariaDB 11.8. Valuable data requires a separately planned logical export/import with compatibility checks, not an in-place downgrade.
+The earlier 10.11.19 report referred to an old production server. The owner approved aligning local Compose to **11.8.6**. Compose now uses fresh `mariadb-11-8-6-data`, leaving previous `mariadb-10-11-data` and older `mariadb-data` untouched. The next local DB recreation initializes an empty database; existing data is not migrated. Preserve valuable data and separately plan a logical export/import before switching. Never downgrade an 11.8 data directory to 10.11. This update does not authorize deleting or reusing old volumes.
 
-See [local setup instructions](../README.md), [completed local bootstrap validation](changes/001-application-bootstrap/validation.md), and [pending production validation](changes/002-production-setup/validation.md).
+See [local setup instructions](../README.md), [completed local bootstrap validation](changes/001-application-bootstrap/validation.md), [completed deployment validation and explicit deferrals](changes/002-production-setup/validation.md), and [pre-release readiness](release-readiness.md).

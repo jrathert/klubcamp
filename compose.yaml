@@ -9,7 +9,7 @@ services:
     volumes:
       - mailpit-data:/data
   db:
-    image: mariadb:10.11.19
+    image: mariadb:11.8.6
     environment:
       MARIADB_DATABASE: ${DB_NAME:?Set DB_NAME in .env}
       MARIADB_USER: ${DB_USER:?Set DB_USER in .env}
@@ -18,7 +18,7 @@ services:
     ports:
       - "127.0.0.1:${DB_PORT:-3306}:3306"
     volumes:
-      - mariadb-10-11-data:/var/lib/mysql
+      - mariadb-11-8-6-data:/var/lib/mysql
 volumes:
   mailpit-data:
-  mariadb-10-11-data:
+  mariadb-11-8-6-data:

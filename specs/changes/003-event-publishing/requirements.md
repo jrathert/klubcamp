@@ -36,6 +36,7 @@ Unpublished form content must not be publicly accessible.
 ## Boundaries and dependencies
 
 - Implementation depends on the completed application bootstrap and verified production setup.
+- Changes 001/002 now satisfy those development prerequisites. Use synthetic data during development; [pre-release readiness](../../release-readiness.md) and applicable feature/security criteria must pass before real product use. No event implementation is authorized merely by closing 002; this change's approved scope still governs the work.
 - Entra configuration and an allowlist must be available before staff-access validation can pass.
 - No registrations, cancellation emails, payments, deadline changes, granular permissions, or i18n framework.
 - Capacity is recorded and displayed here; seat allocation follows with registration.

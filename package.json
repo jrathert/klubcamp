@@ -12,6 +12,8 @@
     "typecheck": "tsc --noEmit -p backend/tsconfig.json && tsc --noEmit -p frontend/tsconfig.json && tsc --noEmit -p tsconfig.tools.json",
     "test": "vitest run",
     "build": "tsc -p backend/tsconfig.json && vite build",
+    "build:production": "npm run build && node scripts/package-production.mjs",
+    "test:production": "node --test scripts/production.test.mjs",
     "start": "node --env-file-if-exists=.env backend/dist/server.js",
     "check:db": "node --env-file-if-exists=.env --import tsx backend/src/check-db.ts",
     "check:smtp": "node --env-file-if-exists=.env --import tsx backend/src/check-smtp.ts"
