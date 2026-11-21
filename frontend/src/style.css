@@ -1,2 +1,24 @@
-body { margin: 0; font-family: system-ui, sans-serif; color: #18352a; background: #f5f8f6; }
-main { max-width: 40rem; margin: 10vh auto; padding: 1.5rem; }
+/* Keep controls usable at narrow widths without adding a UI framework. */
+* { box-sizing: border-box; }
+body { margin: 0; background: #f5f6f7; color: #17212b; font-family: system-ui, sans-serif; }
+main { max-width: 58rem; margin: auto; padding: 1rem; }
+header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+nav { display: flex; flex-wrap: wrap; gap: .5rem; }
+a { color: #164777; }
+h1, h2, h3, p { overflow-wrap: anywhere; }
+section, .events li { background: white; padding: 1rem; border: 1px solid #ccd2d8; border-radius: .4rem; }
+form { display: grid; gap: 1rem; }
+label { display: grid; gap: .3rem; }
+input, textarea, button { font: inherit; padding: .65rem; max-width: 100%; }
+button { cursor: pointer; margin: .25rem; min-height: 44px; }
+button:disabled { cursor: default; }
+textarea { min-height: 8rem; }
+fieldset { min-width: 0; }
+.age-groups { display: flex; flex-wrap: wrap; gap: 1rem; }
+.age-groups label { display: flex; align-items: center; min-height: 44px; }
+dt { font-weight: 650; margin-top: .8rem; }
+dd { margin: .2rem 0; overflow-wrap: anywhere; }
+.plain-text { white-space: pre-wrap; }
+.events { list-style: none; padding: 0; display: grid; gap: 1rem; }
+[role="alert"] { padding: .8rem; border-left: .3rem solid #a12020; background: #fff0f0; }
+:focus-visible { outline: 3px solid #155ca4; outline-offset: 3px; }

@@ -2,7 +2,7 @@
 import React from 'react';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, it, vi } from 'vitest';
-import { App } from './App';
+import { Connectivity as App } from './Connectivity';
 
 // Remove rendered components, request mocks, and fake timers so tests remain independent.
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.useRealTimers(); });
@@ -16,7 +16,7 @@ it('displays loading while the health request is pending', () => {
   ));
   vi.stubGlobal('fetch', fetchMock);
   render(<App />);
-  expect(screen.getByRole('status').textContent).toBe('Connecting to the application…');
+  expect(screen.getByRole('status').textContent).toBe('Verbindung wird hergestellt…');
   expect(fetchMock).toHaveBeenCalledWith('/api/health', expect.objectContaining({ signal: expect.any(AbortSignal) }));
 });
 
@@ -25,7 +25,7 @@ it('displays success for the documented health response', async () => {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({ status: 'ok' }))));
   render(<App />);
   // Retry the assertion until React has processed the asynchronous response.
-  await waitFor(() => expect(screen.getByRole('status').textContent).toBe('Application is available.'));
+  await waitFor(() => expect(screen.getByRole('status').textContent).toBe('Die Anwendung ist verfügbar.'));
 });
 
 // Run the same failure-state assertion for each supported request failure scenario.
@@ -36,7 +36,7 @@ it.each(['network', 'http', 'invalid-json', 'wrong-contract'])('displays failure
   vi.stubGlobal('fetch', fetchMock);
   render(<App />);
   // Wait for the rejected request or invalid response to update the rendered message.
-  await waitFor(() => expect(screen.getByRole('status').textContent).toBe('Unable to connect to the application.'));
+  await waitFor(() => expect(screen.getByRole('status').textContent).toBe('Die Anwendung ist nicht erreichbar.'));
 });
 
 // Advance a virtual clock to verify the timeout without waiting five real seconds.
@@ -55,5 +55,5 @@ it('displays failure after a stalled request times out', async () => {
   render(<App />);
   // Advance timers inside act so React finishes the resulting state updates before assertions.
   await act(async () => { await vi.advanceTimersByTimeAsync(5000); });
-  expect(screen.getByRole('status').textContent).toBe('Unable to connect to the application.');
+  expect(screen.getByRole('status').textContent).toBe('Die Anwendung ist nicht erreichbar.');
 });

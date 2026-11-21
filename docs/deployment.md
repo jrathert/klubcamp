@@ -35,10 +35,12 @@ release/klubcamp/
     ├── app.js               # Server entry point
     ├── runtime.js           # Private configuration loader
     ├── check-db.js          # Explicit database-check entry point
-    ├── check-smtp.js        # Explicit SMTP-check entry point
+     ├── check-smtp.js        # Explicit SMTP-check entry point
+     ├── migrate.js           # Explicit schema migration entry point (003)
     ├── package.json
     ├── package-lock.json
-    ├── backend/dist/        # Allowlisted compiled runtime modules
+     ├── backend/dist/        # Allowlisted compiled runtime modules
+     ├── backend/migrations/  # Reviewed SQL and Drizzle migration metadata (003)
     └── frontend/dist/       # Built public HTML, JS, and CSS
 ```
 
@@ -101,6 +103,12 @@ npm run check:smtp -- authorized-recipient@example.org
 Production SMTP requires authentication and TLS. `SMTP_SECURE=true` selects immediate/implicit TLS (typically port 465); `false` selects **required STARTTLS** (typically port 587), not plaintext. The application requires the upgrade and does not disable certificate verification. Select the actual combination documented by the mail service; see [the verified Azure example](deployment-hetzner.md#azure-smtp-why-smtp_securefalse-is-correct) for the current deployment. Mailpit is for local development only.
 
 The compiled checks need no `tsx` or source files, never run automatically during startup/build/packaging, and retain bounded execution and sanitized diagnostics. npm verbose logging does not reveal sanitized driver errors. Do not publish private files or enable raw protocol logging that could expose credentials.
+
+## Event publishing deployment additions (003)
+
+The artifact now includes event/session runtime modules and reviewed SQL migrations. After dependency installation, `npm run db:migrate` explicitly changes the selected database using the same private configuration file. It never runs at ordinary startup. Review SQL, back up valuable data, stop the application, apply the migration, and restart only during an approved deployment. See [migration operations](event-publishing.md#migration-workflow).
+
+Staff sign-in requires the private Entra, origin, allowlist, and session-secret settings described in [Entra setup](entra-setup.md). Live Entra and hosted feature/proxy/cookie checks are owner-accepted under [003 validation](../specs/changes/003-event-publishing/validation.md), separately from change 002's original bootstrap evidence. No remote deployment is performed by packaging.
 
 ## Replacement and removal boundaries
 

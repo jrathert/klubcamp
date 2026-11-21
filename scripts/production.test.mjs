@@ -81,14 +81,15 @@ test('import errors are sanitized', async (t) => {
 test('packaging allowlist excludes private/development files and preserves sibling configuration', async (t) => {
   const root = await mkdtemp(path.join(tmpdir(), 'klubcamp-package-'));
   t.after(() => rm(root, { recursive: true, force: true }));
-  for (const directory of ['scripts', 'deployment', 'backend/dist', 'frontend/dist', 'release/klubcamp']) {
+  for (const directory of ['scripts', 'deployment', 'backend/dist', 'backend/migrations', 'frontend/dist', 'release/klubcamp']) {
     await mkdir(path.join(root, directory), { recursive: true });
   }
   await cp(new URL('./package-production.mjs', import.meta.url), path.join(root, 'scripts/package-production.mjs'));
   await cp(new URL('../deployment/', import.meta.url), path.join(root, 'deployment'), { recursive: true });
   await writeFile(path.join(root, 'package.json'), '{"type":"module","scripts":{"dev":"unused"}}');
   await writeFile(path.join(root, 'package-lock.json'), '{}');
-  for (const name of ['app', 'server', 'check-db', 'check-smtp', 'check-support', 'smtp-config', 'stale.test']) {
+  for (const name of ['app', 'server', 'check-db', 'check-smtp', 'check-support', 'smtp-config', 'stale.test',
+    'auth', 'database', 'schema', 'events', 'event-repository', 'session-store', 'product-api', 'migrate']) {
     await writeFile(path.join(root, `backend/dist/${name}.js`), '// fixture');
   }
   await writeFile(path.join(root, 'frontend/dist/index.html'), '<html></html>');
@@ -101,11 +102,17 @@ test('packaging allowlist excludes private/development files and preserves sibli
   const app = path.join(root, 'release/klubcamp/app');
   assert.deepEqual((await readdir(app)).sort(), [
     '.klubcamp-artifact', 'app.js', 'backend', 'check-db.js', 'check-smtp.js',
-    'frontend', 'package-lock.json', 'package.json', 'runtime.js',
+    'frontend', 'migrate.js', 'package-lock.json', 'package.json', 'runtime.js',
   ]);
   assert.equal((await readdir(path.join(app, 'backend/dist'))).includes('stale.test.js'), false);
   assert.equal(await readFile(config, 'utf8'), 'KEEP=private');
   assert.equal(JSON.parse(await readFile(path.join(app, 'package.json'), 'utf8')).scripts['check:db'], 'node check-db.js');
+  assert.equal(JSON.parse(await readFile(path.join(app, 'package.json'), 'utf8')).scripts['db:migrate'], 'node migrate.js');
+  await writeFile(path.join(root, 'backend/migrations/.env'), 'SECRET=must-not-copy');
+  assert.notEqual(run().status, 0);
+  await assert.rejects(readFile(path.join(app, 'backend/migrations/.env')));
+  await rm(path.join(root, 'backend/migrations/.env'));
+  assert.equal(run().status, 0);
   await rm(path.join(app, '.klubcamp-artifact'));
   assert.notEqual(run().status, 0);
   assert.equal(await readFile(path.join(app, 'app.js'), 'utf8'), await readFile(new URL('../deployment/app.js', import.meta.url), 'utf8'));

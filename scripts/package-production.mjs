@@ -42,15 +42,28 @@ manifest.scripts = {
   start: 'node app.js',
   'check:db': 'node check-db.js',
   'check:smtp': 'node check-smtp.js',
+  'db:migrate': 'node migrate.js',
 };
 await writeFile(path.join(output, 'package.json'), `${JSON.stringify(manifest, null, 2)}\n`);
 await cp(path.join(root, 'package-lock.json'), path.join(output, 'package-lock.json'));
-for (const file of ['app.js', 'runtime.js', 'check-db.js', 'check-smtp.js']) {
+for (const file of ['app.js', 'runtime.js', 'check-db.js', 'check-smtp.js', 'migrate.js']) {
   await cp(path.join(root, 'deployment', file), path.join(output, file));
 }
-for (const file of ['app.js', 'server.js', 'check-db.js', 'check-smtp.js', 'check-support.js', 'smtp-config.js']) {
+for (const file of ['app.js', 'server.js', 'check-db.js', 'check-smtp.js', 'check-support.js', 'smtp-config.js',
+  'auth.js', 'database.js', 'schema.js', 'events.js', 'event-repository.js', 'session-store.js', 'product-api.js', 'migrate.js']) {
   await cp(path.join(root, 'backend/dist', file), path.join(output, 'backend/dist', file));
 }
+async function validateMigrations(directory, metadata = false) {
+  for (const item of await readdir(directory, { withFileTypes: true })) {
+    if (!metadata && item.isDirectory() && item.name === 'meta') {
+      await validateMigrations(path.join(directory, item.name), true);
+    } else if (!item.isFile() || !(metadata ? /^(?:_journal|\d{4}_snapshot)\.json$/ : /^\d{4}_[a-zA-Z0-9_-]+\.sql$/).test(item.name)) {
+      throw new Error('Unexpected file in migrations');
+    }
+  }
+}
+await validateMigrations(path.join(root, 'backend/migrations'));
+await cp(path.join(root, 'backend/migrations'), path.join(output, 'backend/migrations'), { recursive: true });
 // Vite's build owns this directory; reject links and unexpected private files before copying.
 async function validateFrontend(directory) {
   for (const item of await readdir(directory, { withFileTypes: true })) {

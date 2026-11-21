@@ -5,11 +5,13 @@
 - **Language:** TypeScript for frontend and backend.
 - **Frontend:** React SPA built with Vite. Server-side rendering, SEO, and rich event-sharing previews are not first-release requirements.
 - **Backend:** Node.js 24 with Express, exposing a JSON HTTP API.
-- **Database:** MariaDB 11.8.6, confirmed on the production server; local Docker Compose pins `mariadb:11.8.6` with a fresh version-specific volume. The earlier 10.11.19 report referred to an old server.
-- **Email:** Mailpit (Docker) captures local development email without TLS/authentication or external delivery. Production uses Azure Communication Services SMTP with authenticated STARTTLS on port 587 (`SMTP_SECURE=false`); acceptance and recipient delivery are verified. Spam classification remains a release concern.
+- **Database:** MariaDB 11.8.6 in local Docker Compose and the hosted development deployment. Current application data is disposable; no production-data upgrade path is required. See [database baseline and migrations](../docs/event-publishing.md#migration-workflow).
+- **Database tooling (003):** Owner-selected Drizzle ORM with `mysql2`; Drizzle Kit generates reviewed, versioned SQL migrations applied explicitly. The existing `mariadb` driver remains for bootstrap connectivity checks. Local MariaDB compatibility is verified; hosted checks are owner-accepted.
+- **Staff access (003):** `openid-client` for single-tenant Entra OIDC; `express-session` with MariaDB-backed server sessions and a private stable tenant/user-ID allowlist. See [Entra setup](../docs/entra-setup.md); local and hosted staff-access acceptance is owner-confirmed.
+- **Email:** Mailpit (Docker) captures local development email without TLS/authentication or external delivery. Hosted deployment uses Azure Communication Services SMTP with authenticated STARTTLS on port 587 (`SMTP_SECURE=false`); acceptance and recipient delivery are verified. Deliverability is owner-accepted under PR5; the initial spam result remains historical evidence.
 - **Hosting:** Existing Hetzner Webhosting L package, using konsoleH-managed Node.js for `camps.schwarzweisskoeln.de`.
 
-See [Production Environment](production-environment.md) for the current provider baseline and verification boundaries. Node.js 24.22.2 is verified locally and over SSH on the host. Change 002 is complete for the deployed HTTPS bootstrap; further operational checks are explicitly deferred to [pre-release readiness](release-readiness.md), not claimed passed.
+See [Hosted Development Environment](production-environment.md) for the current provider baseline and verification boundaries. Node.js 24.22.2 is verified locally and over SSH on the host. Changes 002/003 are complete; all [operational checklist](release-readiness.md) items are passed for now by owner acceptance on 21 November 2026, not a new agent-run hosted test.
 
 ## Approved architecture
 
@@ -22,10 +24,10 @@ The priority is understandable code and lightweight infrastructure. No additiona
 
 ## Deferred decisions and validation
 
-- Complete process recovery and other deferred operating checks before real product use under the pre-release checklist. See [provider-neutral packaging/startup](../docs/deployment.md) and [Hetzner-specific operation](../docs/deployment-hetzner.md); the build artifact and launchers do not invoke provider APIs.
-- Select database access and migration tooling.
-- Define authentication, authorization, input validation, and personal-data safeguards in the relevant specifications.
-- Select testing tools and establish backup, restore, and deployment procedures before production use.
+- Process recovery and operating checks are owner-accepted under the pre-release checklist. See [provider-neutral packaging/startup](../docs/deployment.md) and [Hetzner-specific operation](../docs/deployment-hetzner.md); the build artifact and launchers do not invoke provider APIs.
+- Hosted database/access/session tooling and Entra sign-in acceptance are owner-confirmed under change 003.
+- Define further personal-data safeguards in the registration specification; event input validation and staff access are implemented under 003.
+- Vitest covers ordinary automated tests without live services. Backup/restore and current operating checks are owner-accepted; future feature acceptance and the full v1.0 release remain separate.
 
 ## Reconsideration
 

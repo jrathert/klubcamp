@@ -1,10 +1,12 @@
-# Production Environment
+# Hosted Development Environment
 
-This document describes the deployed bootstrap baseline as verified on **7 November 2026**. Public HTTP(S) checks were performed by the agent; SSH, database, email delivery, and restart evidence was supplied by the owner. Change 002 is complete for bootstrap deployment; deferred operational/release checks are tracked separately below.
+This document describes the hosted development bootstrap baseline as verified on **7 November 2026**. There is no production product or production data requiring staged migration; current application data is disposable. Existing `production` filenames and runtime settings designate the deployment build mode. Public HTTP(S) checks were performed by the agent; SSH, database, email delivery, and restart evidence was supplied by the owner. Change 002 is complete for bootstrap deployment; deferred operational/release checks are tracked separately below.
+
+**Current acceptance — 21 November 2026:** The owner confirmed hosted event-publishing validation and accepted PR1–PR6 as passed for now. The [003 validation record](changes/003-event-publishing/validation.md) and [operational checklist](release-readiness.md) distinguish this consolidated owner confirmation from earlier agent-observed evidence. Earlier pending/deferred statements below describe the original bootstrap boundary, not current blockers; no new per-item operating parameters or test artifacts were supplied.
 
 ## Environment baseline
 
-| Component | Production | Local alignment |
+| Component | Hosted development | Local development |
 | --- | --- | --- |
 | Hosting | Existing Hetzner Webhosting L package | Local development only; no production containers |
 | Backend runtime | Node.js **24.22.2**, confirmed by hosted `node --version` | Node.js **24.22.2**, selected via `.nvmrc` / `.node-version` |
@@ -18,8 +20,7 @@ One konsoleH-managed Express process serves the built React frontend and JSON AP
 
 - Keep credentials outside source control and frontend bundles. Production launchers explicitly load `~/klubcamp/production.env` before backend/check imports; the file must be private (mode 600 or stricter) and contain `NODE_ENV=production`. Existing environment variables take precedence. Main settings live in this file, not the panel. `deployment/production.env.example` is a placeholder-only reference, not part of the artifact.
 - Working deployment uses `HOST=127.0.0.1` and `PORT=3000`; konsoleH activation makes the application available through public HTTP(S). The backend does not switch to port 80/443. Do not expose port 3000 or add a proxy/process manager. The exact provider routing implementation is not assumed.
-- Database connectivity uses `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD`. `check:db` succeeded against the actual server. Owner-supplied administration-session metadata: character set `utf8mb4`, collation `utf8mb4_unicode_ci`, SQL mode `STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`, session time zone `SYSTEM`. Administration TLS cipher: `TLS_AES_256_GCM_SHA384`. These session values do not prove application-session parity or application DB TLS. Application TLS requirements/access rules remain to be established; credentials/endpoints stay in the private file.
-- An isolated local 11.8.6 image test returned `11.8.6-MariaDB-ubu2404`, non-root connectivity, `utf8mb4`, matching SQL mode and `SYSTEM` time zone, but connection collation `utf8mb4_uca1400_ai_ci`. Production's Debian packaging and administration-session collation differ. Version alignment is not full configuration parity; schema/connection collation must be deliberately established before schema work rather than assumed from this check.
+- Database connectivity uses `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD`. Hosted `check:db` succeeded. The shared [database baseline](../docs/event-publishing.md#migration-workflow) is defined by the reviewed migrations. Historical connection metadata remains in [002 validation](changes/002-production-setup/validation.md); application TLS/access checks are now owner-accepted under PR3. Credentials/endpoints stay in the private file.
 - Production SMTP uses `SMTP_MODE=smtp`, `SMTP_HOST=smtp.azurecomm.net`, `SMTP_PORT=587`, and `SMTP_SECURE=false`, plus private `SMTP_USER`, `SMTP_PASSWORD`, and `SMTP_FROM`. Here `false` selects required STARTTLS, not plaintext: the application sets `requireTLS=true`. `true` selects immediate TLS, usually port 465, and failed against this Azure port-587 endpoint. `SMTP_FROM` is the authorized sender; the recipient is supplied to the explicit test command. Never use Mailpit mode in production. The authorized test was accepted and received, but marked as spam; address deliverability before product use.
 - `DB_ROOT_PASSWORD` is for local Compose initialization only; do not request or use a production root account.
 
@@ -29,7 +30,7 @@ The completed bootstrap deployment and its evidence are recorded in [002 — Pro
 
 The owner deployed under the **SSH account home directory**, not Apache's document root: `~/klubcamp/app`, private configuration `~/klubcamp/production.env`, and log `~/klubcamp/application.log`. Directory/file permissions `700`/`600` were verified. Logs show sanitized startup messages; manual restart after configuration edits works. Public probes of private-file URLs returned the SPA fallback, not file contents.
 
-Deferred to pre-release readiness, not blockers to closing 002 and not verified results:
+Originally deferred at closure of 002; now accepted by the owner under the pre-release checklist:
 
 1. PR1: Automatic recovery, exact operating controls, startup-failure detection, selected memory limit, and relevant resource documentation.
 2. PR2: Safe hosted update/removal rehearsal preserving configuration, logs, database data, and shared services.
@@ -38,10 +39,10 @@ Deferred to pre-release readiness, not blockers to closing 002 and not verified 
 
 Use the application's selected konsoleH target only; other domains and applications are outside scope. Change 002 is complete as **bootstrap deployment verified**, not full product-release readiness. Development can proceed using synthetic data.
 
-Backup/restore and personal-data procedures (PR4), sender deliverability (PR5), and all other checklist/feature-security gates must be satisfied before real product use; they are not implemented or certified by bootstrap closure.
+Backup/restore and personal-data operation (PR4), sender deliverability (PR5), and the other current checklist items are owner-accepted as passed for now. Future features still require their own specifications and security/functional acceptance; neither bootstrap closure nor this checklist implements a complete product.
 
-## Local database safety
+## Development database setup
 
-The earlier 10.11.19 report referred to an old production server. The owner approved aligning local Compose to **11.8.6**. Compose now uses fresh `mariadb-11-8-6-data`, leaving previous `mariadb-10-11-data` and older `mariadb-data` untouched. The next local DB recreation initializes an empty database; existing data is not migrated. Preserve valuable data and separately plan a logical export/import before switching. Never downgrade an 11.8 data directory to 10.11. This update does not authorize deleting or reusing old volumes.
+Use the [local setup and database-only reset](../README.md#local-mariadb) for disposable development data. No legacy-volume migration is required. Resetting a hosted database or deleting unrelated resources still requires separate approval.
 
 See [local setup instructions](../README.md), [completed local bootstrap validation](changes/001-application-bootstrap/validation.md), [completed deployment validation and explicit deferrals](changes/002-production-setup/validation.md), and [pre-release readiness](release-readiness.md).

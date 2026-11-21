@@ -2,6 +2,8 @@
 
 **Status:** Complete — bootstrap deployment verified and accepted by the owner. Broader operational checks are explicitly deferred to pre-release readiness, not recorded as passed.
 
+**Subsequent acceptance — 21 November 2026:** The owner accepted all transferred PR1–PR6 checks as passed for now in [pre-release readiness](../../release-readiness.md). The deferred/not-passed results below preserve the original 002 closure evidence; they are not current blockers and have not been rewritten as agent-observed passes.
+
 Validated against the owner-revised [requirements.md](requirements.md) using [plan.md](plan.md). The completion decision accepts the deployed bootstrap and transfers unfinished operational work to [pre-release readiness](../../release-readiness.md). Existing local/hosted evidence is preserved below, with sources distinguished; local results do not substitute for hosted checks unless explicitly accepted in the revised criterion.
 
 | ID | Requirements | Passing evidence | Result |

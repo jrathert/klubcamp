@@ -1,12 +1,12 @@
 # Hetzner deployment and operation
 
-**Status:** [Change 002](../specs/changes/002-production-setup/validation.md) is complete as bootstrap deployment verified (7 November 2026): HTTPS frontend/assets/API, private configuration loading, database connectivity, email delivery, and manual restart. The owner explicitly deferred further operational validation to [pre-release readiness](../specs/release-readiness.md); deferred checks are not passed. Remote changes still require operational approval; this is not a product release or permission to use real personal data.
+**Status:** [Change 002](../specs/changes/002-production-setup/validation.md) is complete as bootstrap deployment verified (7 November 2026): HTTPS frontend/assets/API, private configuration loading, database connectivity, email delivery, and manual restart. On 21 November 2026, the owner also accepted [event publishing](../specs/changes/003-event-publishing/validation.md) and all [operational readiness checks](../specs/release-readiness.md) as passed for now. These later results are owner-confirmed, not new agent-observed hosted tests. Remote changes still require approval; this is not a v1.0 product release.
 
 This guide covers the provider-specific upload paths, konsoleH settings, HTTPS, diagnostics, and the current deployment's external Azure mail service. Start with [the provider-neutral packaging and runtime contract](deployment.md). The same package is used here without a Hetzner-specific build or runtime adapter.
 
 ## Hosting model
 
-The bootstrap runs at `https://camps.schwarzweisskoeln.de` on Hetzner Webhosting L using konsoleH-managed Node.js **24.22.2**, verified over SSH and matching the local pin. The actual database is MariaDB **11.8.6**; the initial 10.11.19 report referred to an old server.
+The development bootstrap runs at `https://camps.schwarzweisskoeln.de` on Hetzner Webhosting L using konsoleH-managed Node.js **24.22.2**, verified over SSH and matching the local pin. The database is MariaDB **11.8.6**. There is no production product or production data to migrate; `production` settings and filenames refer to the deployment build mode.
 
 One Express process serves the JSON API and the built React frontend. Vite builds static files locally; neither Vite nor a separate frontend server runs in production. No containers, custom proxy, or additional process manager are planned.
 
@@ -42,7 +42,7 @@ The [shared runtime contract](deployment.md#configuration-and-startup-contract) 
 
 Existing process environment variables take precedence over file values. Avoid duplicating settings in konsoleH: normally no environment entries should be needed, with at most one or two justified bootstrap/provider settings if required. Restart the application after editing the file; running processes do not automatically reload it.
 
-Manual database and SMTP checks load the same file. See [shared check commands and safety rules](deployment.md#manual-connectivity-checks). Existing development commands remain unchanged. The owner separately approved correcting local Compose to MariaDB 11.8.6 on a fresh volume; see [local database safety](../specs/production-environment.md#local-database-safety).
+Manual database and SMTP checks load the same file. See [shared check commands and safety rules](deployment.md#manual-connectivity-checks). For local database setup or a disposable-data reset, use the [README](../README.md#local-mariadb). Hosted resets require separate approval.
 
 ## First deployment — working manual workflow
 
@@ -50,7 +50,7 @@ For an approved deployment, use the following procedure demonstrated by the init
 
 1. Run [the local validation and packaging commands](deployment.md#build-and-package-locally).
 2. Upload the generated `release/klubcamp/` directory into the hosting account's home directory using SSH/SCP, producing `~/klubcamp/app/`.
-3. Manually provision a dedicated MariaDB database and non-root application account. No application tables or migrations are required for change 002.
+3. Manually provision a dedicated MariaDB database and non-root application account. No application tables or migrations were required for change 002. For change 003, review/back up and explicitly apply `npm run db:migrate` from the installed artifact before feature use; see [event migration operations](event-publishing.md#migration-workflow). Do not infer hosted feature acceptance from the earlier bootstrap deployment.
 4. Create the private configuration file with the verified database and SMTP settings and restrict its permissions.
 5. Select Node.js 24.22.2 in the SSH session, verify `node --version`, and install dependencies on the server:
 

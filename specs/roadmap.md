@@ -9,8 +9,8 @@ Each milestone requires an approved specification and validation criteria before
 ## Current changes
 
 1. [001 — Application Bootstrap](changes/001-application-bootstrap/requirements.md): complete local development foundation.
-2. [002 — Production Setup](changes/002-production-setup/requirements.md): complete — bootstrap deployment verified. HTTPS frontend/API, database connectivity, SMTP delivery, and manual restart are accepted; remaining operational hardening is transferred to [pre-release readiness](release-readiness.md).
-3. [003 — Event Publishing](changes/003-event-publishing/requirements.md): approved product scope; implementation not started. Bootstrap and deployment prerequisites are satisfied; development may proceed under its approved specification using synthetic data.
+2. [002 — Production Setup](changes/002-production-setup/requirements.md): complete — bootstrap deployment verified. Operational follow-ups in [pre-release readiness](release-readiness.md) were subsequently accepted as passed for now by the owner on 21 November 2026.
+3. [003 — Event Publishing](changes/003-event-publishing/requirements.md): complete — local automated/database/browser evidence and owner-confirmed staff access, trainer usability, and hosted feature/security acceptance, 21 November 2026.
 
 Change numbers identify specifications; the broader milestones below span multiple changes. Changes 001/002 complete local bootstrap and deployment feasibility, not staff access protection or approval for real product use.
 
@@ -20,7 +20,7 @@ Change numbers identify specifications; the broader milestones below span multip
 - Verify routing, HTTPS, environment configuration, logs, and process restart behavior.
 - Verify MariaDB and outbound email connectivity.
 
-**Complete:** 002 demonstrates a managed bootstrap over HTTPS, private configuration, DB/SMTP connectivity, logs, and manual restart. Full operational hardening is deferred to the release milestone, not claimed verified here.
+**Complete:** 002 demonstrates a managed bootstrap over HTTPS, private configuration, DB/SMTP connectivity, logs, and manual restart. The owner subsequently accepted the operational checklist as passed for now; see its evidence boundaries.
 
 ## 2. Specify the first-release workflows
 
@@ -48,6 +48,8 @@ Change numbers identify specifications; the broader milestones below span multip
 - Provide responsive layouts and basic validation.
 
 **Complete when:** a trainer can set up and publish an event in under 10 minutes.
+
+**Complete:** change 003 accepted by the owner on 21 November 2026, including the trainer acceptance check. Exact timing and whether sign-in was included were not supplied.
 
 ## 5. Build registration end to end
 

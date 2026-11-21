@@ -7,7 +7,9 @@ export default defineConfig(({ mode }) => ({
   root: 'frontend',
   plugins: [react()],
   server: {
-    host: '127.0.0.1',
+    host: 'localhost',
+    port: 5173,
+    strictPort: true,
     proxy: { '/api': `http://127.0.0.1:${process.env.PORT ?? loadEnv(mode, process.cwd(), 'PORT').PORT ?? '3000'}` },
   },
   build: { outDir: 'dist', emptyOutDir: true },

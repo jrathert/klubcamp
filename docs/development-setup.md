@@ -14,7 +14,7 @@ npm run dev:backend
 npm run dev:frontend
 ```
 
-The frontend development server normally listens on **5173**, not port 80. The backend defaults to **3000**.
+The frontend development server binds to **localhost:5173**, not port 80, and prints **http://localhost:5173**. It fails if port 5173 is occupied rather than silently switching ports. Use the printed localhost link for staff sign-in; `127.0.0.1` has separate browser cookies and does not match the configured localhost callback. The backend defaults to **3000**.
 
 ```text
 Browser → Vite :5173
