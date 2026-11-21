@@ -4,6 +4,8 @@
 
 Scope: [requirements.md](requirements.md). Results: [validation.md](validation.md). Production work is specified in [002 — Production Setup](../002-production-setup/plan.md).
 
+The Node 24 steps below preserve the original bootstrap plan. The owner-approved [runtime follow-up in 002](../002-production-setup/requirements.md#approved-runtime-baseline-update) now selects Node.js 26.13.1 / npm 11.20.0.
+
 ## 1. Minimal application
 
 - Use Node.js 24.22.2, TypeScript, React/Vite, and Express.

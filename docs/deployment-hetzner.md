@@ -6,7 +6,7 @@ This guide covers the provider-specific upload paths, konsoleH settings, HTTPS, 
 
 ## Hosting model
 
-The development bootstrap runs at `https://camps.schwarzweisskoeln.de` on Hetzner Webhosting L using konsoleH-managed Node.js **24.22.2**, verified over SSH and matching the local pin. The database is MariaDB **11.8.6**. There is no production product or production data to migrate; `production` settings and filenames refer to the deployment build mode.
+The development bootstrap runs at `https://camps.schwarzweisskoeln.de` on Hetzner Webhosting L using konsoleH-managed Node.js **26.13.1** and npm **11.20.0**, as subsequently reported by the owner and now reflected in the local pins/engine metadata. Original SSH and hosted acceptance evidence used Node 24; no new hosted check was performed for this runtime update. The database is MariaDB **11.8.6**. There is no production product or production data to migrate; `production` settings and filenames refer to the deployment build mode.
 
 One Express process serves the JSON API and the built React frontend. Vite builds static files locally; neither Vite nor a separate frontend server runs in production. No containers, custom proxy, or additional process manager are planned.
 
@@ -52,7 +52,7 @@ For an approved deployment, use the following procedure demonstrated by the init
 2. Upload the generated `release/klubcamp/` directory into the hosting account's home directory using SSH/SCP, producing `~/klubcamp/app/`.
 3. Manually provision a dedicated MariaDB database and non-root application account. No application tables or migrations were required for change 002. For change 003, review/back up and explicitly apply `npm run db:migrate` from the installed artifact before feature use; see [event migration operations](event-publishing.md#migration-workflow). Do not infer hosted feature acceptance from the earlier bootstrap deployment.
 4. Create the private configuration file with the verified database and SMTP settings and restrict its permissions.
-5. Select Node.js 24.22.2 in the SSH session, verify `node --version`, and install dependencies on the server:
+5. Select Node.js 26.13.1 / npm 11.20.0 in the SSH session, verify `node --version` and `npm --version`, and install dependencies on the server:
 
    ```sh
    cd ~/klubcamp/app

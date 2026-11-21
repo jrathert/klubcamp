@@ -4,6 +4,13 @@
 
 **Subsequent acceptance — 21 November 2026:** The owner accepted all transferred PR1–PR6 checks as passed for now in [pre-release readiness](../../release-readiness.md). The deferred/not-passed results below preserve the original 002 closure evidence; they are not current blockers and have not been rewritten as agent-observed passes.
 
+## Runtime baseline update — Node.js 26.13.1 / npm 11.20.0
+
+- **Scope/source:** The owner reported the changed hosted toolchain and approved aligning local runtime pins, package/lockfile engines, and current setup/deployment documentation. The original Node 24 evidence below remains historical; no new hosted validation is claimed.
+- **Configuration:** `.nvmrc` and `.node-version` now select 26.13.1; root manifest and lockfile engines specify Node `26.x` and npm `11.20.0`. Existing development commands, application code, database/migration configuration, dependency declarations, and locked dependency resolutions are unchanged. README explains selecting/installing the toolchain and reinstalling dependencies without overwriting an existing `.env`.
+- **Clean-install compatibility:** Exact Node.js `v26.13.1` / npm `11.20.0` were provisioned through isolated npm tooling. Copied tracked source/configuration, including the proposed modifications but excluding ignored `.env`, installed dependencies, and generated artifacts, to `/tmp/opencode/klubcamp-node26-xtucyj14`. `npm ci --no-audit --no-fund`, `npm run typecheck`, all **104 application tests**, all **six production-tooling tests**, and `npm run build:production` passed. Existing Drizzle Kit development-chain deprecation warnings remain; this update does not resolve them or claim a new dependency audit.
+- **Boundaries:** No runtime was installed into the owner's selected nvm version, and no existing `node_modules`, private configuration, database, mail service, or hosted resource was changed. No DB/SMTP integration, real Entra/browser sign-in, hosted smoke, or dependency audit was rerun for this update. The owner will separately test their local development setup.
+
 Validated against the owner-revised [requirements.md](requirements.md) using [plan.md](plan.md). The completion decision accepts the deployed bootstrap and transfers unfinished operational work to [pre-release readiness](../../release-readiness.md). Existing local/hosted evidence is preserved below, with sources distinguished; local results do not substitute for hosted checks unless explicitly accepted in the revised criterion.
 
 | ID | Requirements | Passing evidence | Result |

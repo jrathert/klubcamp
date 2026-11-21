@@ -8,6 +8,12 @@ Deploy and verify the existing bootstrap at `https://camps.schwarzweisskoeln.de`
 
 See the [production baseline](../../production-environment.md), [technology stack](../../tech-stack.md), and [roadmap](../../roadmap.md). Local bootstrap validation is complete; it is not evidence of production readiness.
 
+## Approved runtime baseline update
+
+The owner reported that the hosted environment now uses **Node.js 26.13.1 / npm 11.20.0** and approved aligning local runtime pins, package/lockfile engine metadata, and current setup/deployment documentation. Preserve historical Node 24 validation evidence and dependency versions; do not change application behavior, database configuration, or hosted resources. Validate installation, type checking, tests, and production packaging where the new toolchain is available. The owner will separately test their local environment.
+
+The original Node 24 requirements and deployment evidence below describe the completed bootstrap baseline, not the current runtime selection.
+
 ## Requirements
 
 | ID | Requirement |

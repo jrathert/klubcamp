@@ -17,7 +17,7 @@ One Express process serves the JSON API and built React frontend. Vite builds st
 
 ## Build and package locally
 
-Use the pinned Node.js version (currently 24.22.2). From the repository root, after the usual dependency installation:
+Use the pinned toolchain: Node.js **26.13.1** and npm **11.20.0**. Verify `node --version` / `npm --version` before dependency installation. From the repository root, after the usual dependency installation:
 
 ```sh
 npm run typecheck
@@ -74,7 +74,7 @@ Create the private file using [the generic reference](../deployment/production.e
 `npm start` **inside the artifact** runs `app.js`, which:
 
 1. Checks that the private configuration exists, is a regular file, and has no group/other permission bits.
-2. Explicitly loads it through Node 24's built-in `loadEnvFile` before backend import.
+2. Explicitly loads it through Node.js's built-in `loadEnvFile` before backend import.
 3. Requires `NODE_ENV=production` and explicit `HOST`/`PORT` for server startup.
 4. Starts the compiled Express backend, serving both frontend and API.
 

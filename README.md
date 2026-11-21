@@ -8,9 +8,9 @@ At the same time, it is a project showing spec-driven development. See the `spec
 
 ## Current status
 
-Event publishing is complete and owner-accepted: staff create, review, publish, and cancel events; public users browse lists and details. Staff access uses Entra OIDC and a private allowlist. The owner confirmed local staff access, trainer usability, and hosted feature/security checks on 21 November 2026. This is not a v1.0 product release.
+Event publishing is complete: staff create, review, publish, and cancel events; public users browse lists and details. Staff access uses Entra OIDC and a private allowlist. Local staff access, trainer usability, and hosted feature/security checks have passed. This is not a v1.0 product release.
 
-The [local application bootstrap (001)](specs/changes/001-application-bootstrap/validation.md), [bootstrap deployment (002)](specs/changes/002-production-setup/validation.md), and [event publishing (003)](specs/changes/003-event-publishing/validation.md) are complete. All current [pre-release checklist](specs/release-readiness.md) items are passed for now by owner acceptance. Registration, confirmation emails, participant administration, and Excel export remain unimplemented and require their own specifications and validation.
+The [local application bootstrap (001)](specs/changes/001-application-bootstrap/validation.md), [bootstrap deployment (002)](specs/changes/002-production-setup/validation.md), and [event publishing (003)](specs/changes/003-event-publishing/validation.md) are complete. All current [pre-release checklist](specs/release-readiness.md) items have passed. Registration, confirmation emails, participant administration, and Excel export remain unimplemented and require their own specifications and validation.
 
 Start with [event publishing setup and migrations](docs/event-publishing.md) and the [step-by-step Entra registration guide](docs/entra-setup.md). For the reason behind the two development servers, see [development setup](docs/development-setup.md).
 
@@ -20,18 +20,21 @@ Also see the [system architecture diagram](specs/diagrams/architecture.drawio.sv
 
 ## Local prerequisites
 
-- Node.js **24.22.2** (see `.nvmrc` and `.node-version`) and npm. Node 24 matches the hosted runtime.
+- Node.js **26.13.1** (see `.nvmrc` and `.node-version`) and npm **11.20.0**, matching the hosted toolchain.
 - Docker Engine and Docker Compose for local MariaDB and Mailpit (email capture). Event/session requests require a migrated database; ordinary tests and health checks do not. Startup opens no DB connection and sends no mail.
 
 ## Install and develop
 
 ```sh
+nvm install
 nvm use
 npm ci
 cp .env.example .env
 ```
 
 `nvm use` selects the installed project version in the current shell; run it in each development terminal. If you do not use nvm, select the version recorded in `.node-version` with your runtime manager instead.
+
+Check `node --version` and `npm --version` before installing dependencies. If npm is not 11.20.0, run `npm install --global npm@11.20.0` after selecting the project Node version. Existing checkouts should run `npm ci` after switching toolchains; keep their existing `.env` rather than copying the example over it.
 
 Replace the disposable database password placeholders in `.env`. Use synthetic data and development-only credentials. Start MariaDB and apply the schema before using events:
 
@@ -167,8 +170,8 @@ Node loads the optional root `.env`; existing environment variables take precede
 
 ## Hosted development deployment
 
-The hosted development bootstrap uses **Node.js 24.22.2** and **MariaDB 11.8.6** on Hetzner Webhosting L at `https://camps.schwarzweisskoeln.de`. There is no production product or production data to migrate. HTTPS, frontend/assets/API, hosted database connectivity, SMTP delivery, and manual restart have been verified. See [hosted environment](specs/production-environment.md) for evidence boundaries, [provider-neutral packaging and startup](docs/deployment.md) for the artifact/runtime contract, and [Hetzner deployment and operation](docs/deployment-hetzner.md) for actual home-directory paths, panel settings, HTTPS, and the current Azure SMTP STARTTLS setup. Existing `production` command/file names refer to the deployment build mode, not approval for real product use.
+The hosted development bootstrap uses **Node.js 26.13.1 / npm 11.20.0** and **MariaDB 11.8.6** on Hetzner Webhosting L at `https://camps.schwarzweisskoeln.de`. There is no production product or production data to migrate. HTTPS, frontend/assets/API, database connectivity, SMTP delivery, and manual restart have been validated. See [hosted environment](specs/production-environment.md) for configuration details, [provider-neutral packaging and startup](docs/deployment.md) for the artifact/runtime contract, and [Hetzner deployment and operation](docs/deployment-hetzner.md) for actual home-directory paths, panel settings, HTTPS, and the current Azure SMTP STARTTLS setup. Existing `production` command/file names refer to the deployment build mode, not approval for real product use.
 
 Build an upload-ready package with `npm run build:production`; validate its production-only bootstrap with `npm run test:production`. Output is `release/klubcamp/app/`, without secrets or dependencies. On the server, install dependencies with `npm ci --omit=dev`; generated npm start/check commands explicitly load the sibling `production.env`. Existing development commands and configuration are unchanged.
 
-The owner accepted [002 — Production Setup](specs/changes/002-production-setup/validation.md) as complete for bootstrap deployment, then accepted all [operational readiness checks](specs/release-readiness.md) as passed for now on 21 November 2026. These are owner-confirmed results, not a new agent-run hosted verification. Future registration and personal-data features still require their own approved scope and acceptance. Remote changes require approval. Local Compose/preview instructions are not a hosted procedure. Locally, stop the servers with Ctrl+C; `docker compose down` preserves database data.
+[002 — Production Setup](specs/changes/002-production-setup/validation.md) and all current [operational readiness checks](specs/release-readiness.md) are complete. Future registration and personal-data features still require their own approved scope and acceptance. Remote changes require approval. Local Compose/preview instructions are not a hosted procedure. Locally, stop the servers with Ctrl+C; `docker compose down` preserves database data.

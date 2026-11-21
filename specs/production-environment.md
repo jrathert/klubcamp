@@ -6,10 +6,13 @@ This document describes the hosted development bootstrap baseline as verified on
 
 ## Environment baseline
 
+**Runtime update:** The owner subsequently reported hosted **Node.js 26.13.1 / npm 11.20.0** and approved local alignment. This supersedes the original Node 24 baseline only; earlier validation retains its original environment and no hosted test is implied by changing local pins. See [002's approved follow-up](changes/002-production-setup/requirements.md#approved-runtime-baseline-update) and [validation record](changes/002-production-setup/validation.md) for local compatibility results.
+
 | Component | Hosted development | Local development |
 | --- | --- | --- |
 | Hosting | Existing Hetzner Webhosting L package | Local development only; no production containers |
-| Backend runtime | Node.js **24.22.2**, confirmed by hosted `node --version` | Node.js **24.22.2**, selected via `.nvmrc` / `.node-version` |
+| Backend runtime | Node.js **26.13.1**, owner-reported | Node.js **26.13.1**, selected via `.nvmrc` / `.node-version` |
+| Package manager | npm **11.20.0**, owner-reported | npm **11.20.0**, recorded in package/lockfile engines |
 | Database | MariaDB **11.8.6-MariaDB-0+deb13u1**, owner-confirmed on the application DB server; non-root account | Docker Compose image `mariadb:11.8.6`, fresh `mariadb-11-8-6-data` volume |
 | Email | Azure Communication Services, `smtp.azurecomm.net:587`, authenticated STARTTLS; delivery confirmed, marked as spam | Mailpit captures development mail; local delivery verified |
 | Application hostname | `camps.schwarzweisskoeln.de`, created by the owner | Other domains are outside deployment scope |

@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": "24.x"
+    "node": "26.x",
+    "npm": "11.20.0"
   },
   "scripts": {
     "dev:backend": "node --env-file-if-exists=.env --import tsx --watch backend/src/server.ts",

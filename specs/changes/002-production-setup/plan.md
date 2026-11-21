@@ -1,5 +1,13 @@
 # 002 — Production Setup: Implementation Plan
 
+## Runtime baseline update follow-up
+
+- Align `.nvmrc` / `.node-version` to 26.13.1 and package/lockfile engines to Node 26 and npm 11.20.0.
+- Update current documentation to the owner-reported hosted toolchain; preserve original validation records and dependency resolutions.
+- Validate a clean dependency installation, type checking, application tests, production-tooling tests, and production build with the exact toolchain in an isolated local directory when available. No DB/SMTP or hosted operation is required; record owner local/browser checks separately.
+
+The original Node 24 steps below preserve the completed bootstrap plan; the follow-up above controls current runtime selection.
+
 **Status:** Complete — bootstrap deployment verified under the owner-approved completion boundary. Further operational/release validation is tracked in the pre-release checklist.
 
 Implement only [requirements.md](requirements.md). Record evidence against [validation.md](validation.md), without credentials or unnecessary execution history.

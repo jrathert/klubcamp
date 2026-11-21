@@ -11,7 +11,7 @@ See [mission](../../mission.md), [technology stack](../../tech-stack.md), and [r
 ## Confirmed decisions
 
 - TypeScript, React/Vite, Express, and npm; separate frontend/backend directories.
-- Node.js 24, locally pinned to 24.22.2.
+- Original bootstrap: Node.js 24, pinned to 24.22.2. The owner-approved [runtime follow-up in 002](../002-production-setup/requirements.md#approved-runtime-baseline-update) supersedes this with Node.js 26.13.1 / npm 11.20.0; historical validation is unchanged.
 - Original local bootstrap used MariaDB 10.11.19 based on the then-reported provider version. Change 002 corrects the actual production baseline and current Compose pin to 11.8.6; see [production environment](../../production-environment.md).
 - Local Docker Mailpit captures development email without external delivery.
 - Vitest; normal tests and startup do not depend on live infrastructure.
